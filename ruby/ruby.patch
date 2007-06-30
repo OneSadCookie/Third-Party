@@ -1,0 +1,21 @@
+diff -cr ruby-1.8.6/Makefile.in ruby-1.8.6-cross-compiling/Makefile.in
+*** ruby-1.8.6/Makefile.in	2007-02-13 12:01:19.000000000 +1300
+--- ruby-1.8.6-cross-compiling/Makefile.in	2007-07-01 00:40:12.000000000 +1200
+***************
+*** 131,137 ****
+  		if RUBY_PLATFORM =~ /mswin|bccwin|mingw/; \
+  		  class File; \
+  		    remove_const :ALT_SEPARATOR; \
+! 		    ALT_SEPARATOR = "\\"; \
+  		  end; \
+  		end; \
+  		' > $@
+--- 131,137 ----
+  		if RUBY_PLATFORM =~ /mswin|bccwin|mingw/; \
+  		  class File; \
+  		    remove_const :ALT_SEPARATOR; \
+! 		    ALT_SEPARATOR = "\\\\"; \
+  		  end; \
+  		end; \
+  		' > $@
+Only in ruby-1.8.6-cross-compiling/ext/win32ole: .document

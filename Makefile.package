@@ -1,0 +1,43 @@
+TP_ARCHIVE = $(notdir $(TP_URL))
+TP_CONFIGURE = $(TP_DIR)/configure
+TP_PREFIX = $(TP_INSTALL)/$(TP_ARCH)
+
+ifndef TP_MAKE_TARGETS
+	TP_MAKE_TARGETS = install
+endif
+ifndef TP_EXTRA_CONFIGURE_ARGS
+	TP_EXTRA_CONFIGURE_ARGS =
+endif
+
+export CFLAGS = -arch $(TP_ARCH) -isysroot $(TP_SDK_PATH) -mmacosx-version-min=$(TP_MIN_VERSION)
+
+$(TP_PREFIX)/lib/$(TP_LIB): $(TP_CONFIGURE)
+	mkdir -p build/$(TP_ARCH) && \
+	cd build/$(TP_ARCH) && \
+	../../$(TP_CONFIGURE) \
+		--prefix=$(TP_PREFIX) \
+		--host=$(TP_HOST) \
+		--disable-shared \
+		$(TP_EXTRA_CONFIGURE_ARGS) && \
+	make $(TP_MAKE_TARGETS)
+
+$(TP_CONFIGURE): $(basename $(TP_ARCHIVE))
+	tar xmf $<
+ifdef TP_PATCH
+	cd $(TP_DIR) && patch -p1 < ../$(TP_PATCH)
+endif
+
+%.tar: %.tar.bz2
+	bunzip2 --force --keep $<
+
+%.tar: %.tar.gz
+	gunzip --stdout $< > $@
+
+$(TP_ARCHIVE):
+	curl -C - -O $(TP_URL)
+
+clean:
+	rm -rf $(TP_DIR) build
+
+cleandl:
+	rm -f $(TP_ARCHIVE) $(basename $(TP_ARCHIVE))
