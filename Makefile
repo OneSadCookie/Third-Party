@@ -1,4 +1,5 @@
-TP_PACKAGES = freetype libpng libjpeg ruby libogg libvorbis
+TP_ALL_PACKAGES = freetype libpng libjpeg ruby libogg libvorbis
+TP_PACKAGES = $(TP_ALL_PACKAGES)
 
 export TP_INSTALL = $(shell echo `pwd`/install)
 export TP_PACKAGE_MAKEFILE = $(shell echo `pwd`/Makefile.package)
@@ -13,7 +14,9 @@ all: $(TP_PACKAGE_BUILD_TARGETS)
 	ruby universal.rb $*
 
 clean: $(TP_PACKAGE_CLEAN_TARGETS)
+ifeq ($(words $(TP_PACKAGES)), $(words $(TP_ALL_PACKAGES)))
 	rm -rf $(TP_INSTALL)
+endif
 
 %.clean:
 	$(MAKE) -C $* clean

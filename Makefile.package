@@ -21,8 +21,12 @@ $(TP_PREFIX)/lib/$(TP_LIB): $(TP_CONFIGURE)
 		$(TP_EXTRA_CONFIGURE_ARGS) && \
 	make $(TP_MAKE_TARGETS)
 
-$(TP_CONFIGURE): $(basename $(TP_ARCHIVE))
-	tar xmf $<
+$(TP_CONFIGURE): $(TP_ARCHIVE)
+ifeq ($(findstring bz, $(suffix $(TP_ARCHIVE))), bz)
+	tar xjmf $<
+else
+	tar xzmf $<
+endif
 ifdef TP_PATCH
 	cd $(TP_DIR) && patch -p1 < ../$(TP_PATCH)
 endif
@@ -31,6 +35,9 @@ endif
 	bunzip2 --force --keep $<
 
 %.tar: %.tar.gz
+	gunzip --stdout $< > $@
+
+%.tar: %.tgz
 	gunzip --stdout $< > $@
 
 $(TP_ARCHIVE):

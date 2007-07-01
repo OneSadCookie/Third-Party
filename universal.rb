@@ -12,6 +12,8 @@ SDK_NAME = {
     8 => '10.4u',
 }
 
+SDK_VERSION = SDK_NAME.invert
+
 HOST = {
     'ppc' => 'powerpc',
     'ppc64' => 'powerpc64',
@@ -19,7 +21,36 @@ HOST = {
     'x86_64' => 'x86_64'
 }
 
-MAX_DARWIN_VERSION = 9
+def macos_to_darwin_version(name)
+    name =~ /^(\d+)\.(\d+)/
+    major, minor = $1, $2
+    if major.to_i == 10 then
+        return minor.to_i + 4
+    else
+        raise "Unparseable Mac OS X version #{name}"
+    end
+end
+
+def version_from_sdk_name(name)
+    SDK_VERSION[name] || macos_to_darwin_version(name)
+end
+
+def existing_sdk_names
+    Dir['/Developer/SDKs/MacOSX*.sdk'].map { |path|
+        path =~ %r{/Developer/SDKs/MacOSX(.*)\.sdk}
+        $1
+    }
+end
+
+def existing_sdks
+    existing_sdk_names.map { |name|
+        version_from_sdk_name(name)
+    }
+end
+
+def can_build_for(arch)
+    existing_sdks.include?(MIN_DARWIN_VERSION[arch])
+end
 
 def display_version_for(darwin_version)
     "10.#{darwin_version - 4}"
@@ -51,6 +82,8 @@ end
 $subdir = ARGV[0]
 
 ARCHS.each do |arch|
+    next unless can_build_for(arch)
+    
     version = version_for(arch)
     min_version = display_version_for(version)
     sdk = sdk_for(version)
