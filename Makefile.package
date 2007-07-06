@@ -28,7 +28,10 @@ else
 	tar xzmf $<
 endif
 ifdef TP_PATCH
-	cd $(TP_DIR) && patch -p1 < ../$(TP_PATCH)
+	cd $(TP_DIR) && gunzip --stdout ../$(TP_PATCH) | patch -p1
+endif
+ifdef TP_POSTPATCH
+	cd $(TP_DIR) && $(TP_POSTPATCH)
 endif
 
 %.tar: %.tar.bz2

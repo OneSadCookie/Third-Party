@@ -3,7 +3,7 @@ TP_DIR = ruby-1.8.6
 TP_LIB = libruby-static.a
 TP_EXTRA_CONFIGURE_ARGS = ac_cv_func_setpgrp_void=no
 TP_MAKE_TARGETS = all install
-TP_PATCH = ruby.patch
+TP_PATCH = ruby.patch.gz
 
 export EXTS = digest,openssl,socket,stringio,zlib
 export DLDFLAGS = $(CFLAGS)
