@@ -49,7 +49,7 @@ def existing_sdks
 end
 
 def can_build_for(arch)
-    existing_sdks.include?(MIN_DARWIN_VERSION[arch])
+    existing_sdks.find { |v| v >= MIN_DARWIN_VERSION[arch] }
 end
 
 def display_version_for(darwin_version)
