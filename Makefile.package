@@ -8,6 +8,11 @@ endif
 ifndef TP_EXTRA_CONFIGURE_ARGS
 	TP_EXTRA_CONFIGURE_ARGS =
 endif
+ifndef TP_SHARED
+    TP_SHARED_ARGS = --disable-shared --enable-static
+else
+    TP_SHARED_ARGS = --disable-static --enable-shared
+endif
 
 export CFLAGS = -arch $(TP_ARCH) -isysroot $(TP_SDK_PATH) -mmacosx-version-min=$(TP_MIN_VERSION)
 
@@ -17,7 +22,7 @@ $(TP_PREFIX)/lib/$(TP_LIB): $(TP_CONFIGURE)
 	../../$(TP_CONFIGURE) \
 		--prefix=$(TP_PREFIX) \
 		--host=$(TP_HOST) \
-		--disable-shared \
+		$(TP_SHARED_ARGS) \
 		$(TP_EXTRA_CONFIGURE_ARGS) && \
 	make $(TP_MAKE_TARGETS)
 
