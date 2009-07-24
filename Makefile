@@ -1,4 +1,4 @@
-TP_ALL_PACKAGES = freetype libpng libjpeg ruby libogg libvorbis glew gc
+TP_ALL_PACKAGES = freetype libpng libjpeg libogg libvorbis glew gc
 TP_PACKAGES = $(TP_ALL_PACKAGES)
 
 export TP_INSTALL = $(shell echo `pwd`/install)
