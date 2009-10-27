@@ -79,6 +79,14 @@ def host_for(arch, version)
     "#{HOST[arch]}-apple-darwin#{version}"
 end
 
+def compilers_for(arch, version)
+    if version < 9
+        return 'gcc-4.0', 'g++-4.0'
+    else
+        return 'gcc-4.2', 'g++-4.2'
+    end
+end
+
 $subdir = ARGV[0]
 
 ARCHS.each do |arch|
@@ -89,7 +97,10 @@ ARCHS.each do |arch|
     sdk = sdk_for(version)
     sdk_path = sdk_path(sdk)
     host = host_for(arch, version)
+    cc, cxx = compilers_for(arch, version)
     system("make -C #{$subdir} " +
+        "TP_CC=#{cc} " +
+        "TP_CXX=#{cxx} " +
         "TP_ARCH=#{arch} " +
         "TP_SDK_PATH=#{sdk_path} " +
         "TP_MIN_VERSION=#{min_version} " +

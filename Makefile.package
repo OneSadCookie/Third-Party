@@ -14,7 +14,7 @@ else
     TP_SHARED_ARGS = --disable-static --enable-shared
 endif
 
-export CFLAGS = -arch $(TP_ARCH) -isysroot $(TP_SDK_PATH) -mmacosx-version-min=$(TP_MIN_VERSION)
+export TP_CFLAGS = -arch $(TP_ARCH) -isysroot $(TP_SDK_PATH) -mmacosx-version-min=$(TP_MIN_VERSION)
 
 $(TP_PREFIX)/lib/$(TP_LIB): $(TP_CONFIGURE)
 	mkdir -p build/$(TP_ARCH) && \
@@ -22,6 +22,11 @@ $(TP_PREFIX)/lib/$(TP_LIB): $(TP_CONFIGURE)
 	../../$(TP_CONFIGURE) \
 		--prefix=$(TP_PREFIX) \
 		--host=$(TP_HOST) \
+		CC=$(TP_CC) \
+		CPP='$(TP_CC) -E $(TP_CFLAGS)' \
+		CXX=$(TP_CXX) \
+		CXXCPP='$(TP_CXX) -E $(TP_CFLAGS)' \
+		CFLAGS='$(TP_CFLAGS)' \
 		$(TP_SHARED_ARGS) \
 		$(TP_EXTRA_CONFIGURE_ARGS) && \
 	make $(TP_MAKE_TARGETS)
