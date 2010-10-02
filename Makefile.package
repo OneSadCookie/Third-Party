@@ -54,7 +54,7 @@ endif
 	gunzip --stdout $< > $@
 
 $(TP_ARCHIVE):
-	curl -C - -O $(TP_URL)
+	curl -L -C - -O $(TP_URL)
 
 clean:
 	rm -rf $(TP_DIR) build

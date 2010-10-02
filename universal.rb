@@ -81,9 +81,9 @@ end
 
 def compilers_for(arch, version)
     if version < 9
-        return 'gcc-4.0', 'g++-4.0'
+        return '/Developer/usr/bin/gcc-4.0', '/Developer/usr/bin/g++-4.0'
     else
-        return 'gcc-4.2', 'g++-4.2'
+        return '/Developer/usr/bin/gcc-4.2', '/Developer/usr/bin/g++-4.2'
     end
 end
 

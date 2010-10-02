@@ -15,6 +15,9 @@ all: $(TP_PACKAGE_BUILD_TARGETS)
 %.build:
 	ruby universal.rb $*
 
+# extra deps...
+libvorbis.build: libogg.build
+
 clean: $(TP_PACKAGE_CLEAN_TARGETS)
 ifeq ($(words $(TP_PACKAGES)), $(words $(TP_ALL_PACKAGES)))
 	rm -rf $(TP_INSTALL)
